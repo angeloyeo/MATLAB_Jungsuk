@@ -5,7 +5,7 @@ syms PSI x y u v Uinf Lambda
 diff(Uinf*y + Lambda / (2 * pi) * atan(y/x), y) % u
 diff(Uinf*y + Lambda / (2 * pi) * atan(y/x), x) % -v
 
-%% quiver로 그리기
+%% plot the results with quiver and streamline
 
 clear; close all;
 Uinf = 1;

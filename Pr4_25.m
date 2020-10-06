@@ -12,6 +12,9 @@ a = A\b;
 xx = linspace(0,1,100);
 yy1 = a(1) * sqrt(xx) + a(2) * xx + a(3) * xx.^2 + a(4) * xx.^3 + a(5) * xx.^4;
 
-h = plot(xx, yy1);
+h1 = plot(xx, yy1);
 hold on;
-plot(xx, -yy1);
+h2 = plot(xx, -yy1);
+h3 = plot(xx, -2 * yy1);
+
+legend([h1, h3],'1번 그래프','3번 그래프')

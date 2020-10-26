@@ -8,7 +8,7 @@ diff(Vinf * y - k/(2*pi)* y/(x^2+y^2), x) % -v
 
 %%
 clear; close all; 
-Vinf = 0.01; % velocity of uniform flow
+Vinf = 0.1; % velocity of uniform flow
 lambda = 1; % strength
 L = 1/10; % distance from source to sink 
 k = L * lambda;

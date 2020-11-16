@@ -10,7 +10,7 @@ many airfoils.
 Ref: https://en.wikipedia.org/wiki/Angle_of_attack
 %}
 
-alpha_stall = deg2rad(17);
+alpha_stall = deg2rad(20);
 theta = deg2rad(45);
 omega = 628.318; % 6000 rpm in rad/s
 c = 0.02; % m
@@ -21,10 +21,10 @@ AR = 14; % from the reference paper
 B1 = 1.11 + 0.018 * AR;
 C_D_max = B1;
 
-C_D_stall = 0.001; % What is this value?
-C_L_stall = 0.001; % What is this value exactly?
+C_D_stall = 0.1; % What is this value?
+C_L_stall = 0.1; % What is this value exactly?
 
-B2 = C_D_stall - C_D_max * sin(alpha_stall)^2;
+B2 = (C_D_stall - C_D_max * sin(alpha_stall)^2)/cos(alpha_stall);
 A1 = B1/2;
 A2 = (C_L_stall - C_D_max*sin(alpha_stall)*cos(alpha_stall)) * sin(alpha_stall) / (cos(alpha_stall)^2);
 rho = 1.4;

@@ -32,12 +32,31 @@ rho = 1.4;
 
 alpha = linspace(0, pi/2, 100);
 alpha_in_deg = rad2deg(alpha);
-C_D = zeros(1, length(alpha));
-C_L = zeros(1, length(alpha));
-for i = 1:length(alpha)
-    C_D(i) = B1 * sin(alpha(i))^2 + B2 * cos(alpha(i));
-    C_L(i) = A1 * sin(2*alpha(i)) + A2 * cos(alpha(i))^2 / sin(alpha(i));
-end
+% C_D = zeros(1, length(alpha));
+% C_L = zeros(1, length(alpha));
+% for i = 1:length(alpha)
+%     C_D(i) = B1 * sin(alpha(i))^2 + B2 * cos(alpha(i));
+%     C_L(i) = A1 * sin(2*alpha(i)) + A2 * cos(alpha(i))^2 / sin(alpha(i));
+% end
+
+num = xlsread('Cl.csv');
+
+x = num(:,1);
+y = num(:,2);
+
+xi = linspace(0, 90, 100);
+C_L = interp1(x, y, xi);
+
+num = xlsread('Cd.csv');
+
+x = sort(num(:,1));
+x(81) = []; % accidently has an overlapping number
+y = sort(num(:,2));
+y(81) = [];
+
+xi = linspace(0, 90, 100);
+C_D = interp1(x, y, xi);
+
 
 figure; plot(alpha_in_deg, C_D)
 hold on;

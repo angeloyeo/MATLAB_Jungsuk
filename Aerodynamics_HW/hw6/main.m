@@ -42,28 +42,8 @@ ylabel('C_L or C_D');
 legend([h1, h2],'C_D','C_L','location','best');
 grid on;
 %%
-[~, idx_theta_45] = min(abs(alpha_in_deg - 45));
-
-C_L_at45 = C_L(idx_theta_45);
-C_D_at45 = C_D(idx_theta_45);
-
 a = 0.001; % first guess
 b = 0.001; % first guess
-
-V_disc = Vinf + Vinf * a;
-V2 = r * omega * (1 - b);
-
-V1 = sqrt(V_disc^2 + V2^2);
-phi = atan(V_disc/V2);
-
-alpha2 = theta - phi;
-
-dT_a = 1/2*(V1^2)*rho*c*(C_L_at45 * cos(phi) - C_D_at45 * sin(phi)) * dr;
-dQ_a = 1/2 *(V1^2) * rho * c * (C_L_at45 * sin(phi) + C_D_at45 * cos(phi)) * dr * r;
-
-dT_m = 4 * pi * r * dr * rho * Vinf^2 * a * (1+a);
-dQ_m = rho * 4 * pi * r^3 * Vinf * (1+a) * b * omega * dr;
-
 %% Change a until dT_a is within 5% of dT_m
 
 while(1)
@@ -73,11 +53,16 @@ while(1)
     V1 = sqrt(V_disc^2 + V2^2);
     phi = atan(V_disc/V2);
     
-    dT_a = 1/2*(V1^2)*rho*c*(C_L_at45 * cos(phi) - C_D_at45 * sin(phi)) * dr;
-    dQ_a = 1/2 *(V1^2) * rho * c * (C_L_at45 * sin(phi) + C_D_at45 * cos(phi)) * dr * r;
+    alpha2 = rad2deg(theta - phi);
     
-    dT_m = 4 * pi * r * dr * rho * Vinf^2 * a * (1+a);
-    dQ_m = rho * 4 * pi * r^3 * Vinf * (1+a) * b * omega * dr;
+    
+    [~, idx_theta_in_use] = min(abs(alpha_in_deg - alpha2));
+    
+    C_L_in_use = C_L(idx_theta_in_use);
+    C_D_in_use = C_D(idx_theta_in_use);
+    
+    dT_a = 1/2*(V1^2)*rho*c*(C_L_in_use * cos(phi) - C_D_in_use * sin(phi)) * dr;
+    dT_m = 4 * pi * r * dr * rho * Vinf^2 * a * (1 + a);
     
     perc_for_a = abs(dT_a - dT_m) / dT_m * 100;
     
@@ -98,12 +83,17 @@ while(1)
     V1 = sqrt(V_disc^2 + V2^2);
     phi = atan(V_disc/V2);
     
-    dT_a = 1/2*(V1^2)*rho*c*(C_L_at45 * cos(phi) - C_D_at45 * sin(phi)) * dr;
-    dQ_a = 1/2 *(V1^2) * rho * c * (C_L_at45 * sin(phi) + C_D_at45 * cos(phi)) * dr * r;
+    alpha2 = rad2deg(theta - phi);
     
-    dT_m = 4 * pi * r * dr * rho * Vinf^2 * a * (1+a);
+    
+    [~, idx_theta_in_use] = min(abs(alpha_in_deg - alpha2));
+    
+    C_L_in_use = C_L(idx_theta_in_use);
+    C_D_in_use = C_D(idx_theta_in_use);
+    
+    dQ_a = 1/2 *(V1^2) * rho * c * (C_L_in_use * sin(phi) + C_D_in_use * cos(phi)) * dr * r;
     dQ_m = rho * 4 * pi * r^3 * Vinf * (1+a) * b * omega * dr;
-        
+    
     perc_for_b = abs(dQ_a - dQ_m) / dQ_m * 100;
     
     if perc_for_b < 10

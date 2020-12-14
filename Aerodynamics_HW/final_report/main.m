@@ -53,16 +53,16 @@ for i = 1:length(r)
         
         perc_for_a = abs(dT_aero - dT_mon) / dT_mon * 100;
         
-        if perc_for_a < 1
-            break
-        end
-        
         Vi = Vi + 0.01;
         iter_num{i} = [iter_num{i}, ii];
         iter_vi{i} = [iter_vi{i}, Vi];
         iter_dT_aero{i} = [iter_dT_aero{i}, dT_aero];
         iter_dT_mon{i} = [iter_dT_mon{i}, dT_mon];
         ii=ii+1; % for recording iteration number
+        
+        if perc_for_a < 1
+            break
+        end
     end
     
     my_dT(i) = dT_aero;
@@ -70,7 +70,7 @@ end
 
 %%
 
-sum(my_dT * num_of_blade)
+sum(my_dT) * num_of_blade
 
 for i=1:length(r)
     xlswrite('my_result.xlsx',{'iter', 'Vi', 'dT aero', 'dT momentum'},i)

@@ -25,22 +25,21 @@ y = num(:,2);
 xi = linspace(0, 90, 100);
 C_L = interp1(x, y, xi);
 
-num = xlsread('Cd.csv');
-
-x = sort(num(:,1));
-x(81) = []; % accidently has an overlapping number
-y = sort(num(:,2));
-y(81) = [];
-
-xi = linspace(0, 90, 100);
-C_D = interp1(x, y, xi);
-
 my_dT = zeros(1, length(r)); % I want to get 5 dT's for each r
+
+iter_num = cell(1, length(r));
+iter_vi = cell(1, length(r));
+iter_dT_aero = cell(1, length(r));
+iter_dT_mon = cell(1, length(r));
 
 for i = 1:length(r)
     
     Vi = 0.00001; % first guess
-    
+    iter_num{i} = [];
+    iter_vi{i} = [];
+    iter_dT_aero{i} = [];
+    iter_dT_mon{i} = [];
+    ii=1;
     while(1)
         phi = atan((Vi + Vc)/(omega * r(i)));
         alpha = rad2deg(theta(i) - phi);
@@ -58,8 +57,12 @@ for i = 1:length(r)
             break
         end
         
-        Vi = Vi + 0.00001;
-        
+        Vi = Vi + 0.01;
+        iter_num{i} = [iter_num{i}, ii];
+        iter_vi{i} = [iter_vi{i}, Vi];
+        iter_dT_aero{i} = [iter_dT_aero{i}, dT_aero];
+        iter_dT_mon{i} = [iter_dT_mon{i}, dT_mon];
+        ii=ii+1; % for recording iteration number
     end
     
     my_dT(i) = dT_aero;
@@ -68,4 +71,8 @@ end
 %%
 
 sum(my_dT * num_of_blade)
-    
+
+for i=1:length(r)
+    xlswrite('my_result.xlsx',{'iter', 'Vi', 'dT aero', 'dT momentum'},i)
+    xlswrite('my_result.xlsx',[iter_num{i}', iter_vi{i}', iter_dT_aero{i}', iter_dT_mon{i}'],i,'A2')
+end

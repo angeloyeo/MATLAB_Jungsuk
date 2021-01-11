@@ -1,39 +1,42 @@
-function main(v)
+function Quick_sort_fun(v)
 res = quicksort(v, 1, length(v));
 disp(res)
 end
 
 function res = quicksort(v, idx_start, idx_end)
 
-% ¿ø¼Ò°¡ 1°³ÀÎ °æ¿ì ±×´ë·Î µÎ±â
+% ì›ì†Œê°€ 1ê°œì¸ ê²½ìš° ê·¸ëŒ€ë¡œ ë‘ê¸°
 if idx_start >= idx_end
     res = v;
 else
     idx_pivot = idx_start;
-    i = idx_pivot + 1; 
+    i = idx_pivot+1;
     j = idx_end;
     
-    while(i <= j) % ¾ù°¥¸± ¶§ ±îÁö ¹Ýº¹
-        while(i <= idx_end && v(i) <= v(idx_pivot))
-            i = i + 1;
+    while (i <= j)
+        
+        while (v(i)<=v(idx_pivot) && i <= idx_end)
+            i = i+1;
         end
         
-        while(j > idx_start && v(j) >= v(idx_pivot))
-            j = j - 1;
+        while (v(j)>=v(idx_pivot) && j > idx_start)
+            j = j-1;
+            
         end
-        
-        if i > j
-            v = swap(v, j, idx_pivot);
+        if i >j
+            
+            v = swap(v, idx_pivot, j);
+            
         else
             v = swap(v, i, j);
         end
         
+        
     end
-    
-    v = quicksort(v, idx_start, j-1);
+    v = quicksort(v, idx_start,j-1);
     v = quicksort(v, j+1, idx_end);
-    
     res = v;
+    
 end
 end
 

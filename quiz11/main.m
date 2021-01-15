@@ -23,20 +23,25 @@ end
 end
 
 function res = merge(left, right)
-res = [];
-while ~isempty(left) || ~isempty(right)
-    if ~isempty(left) && ~isempty(right)
-        if left(1) <= right(1)
+res = []; % merge sort는 복사해 넣을 추가 array가 필요함.
+
+while ~isempty(left) || ~isempty(right) % 왼쪽 혹은 오른쪽 행렬에 하나라도 원소가 있다면 계속 수행
+    
+    if ~isempty(left) && ~isempty(right) %  왼쪽 행렬 오른쪽 행렬에 모두 원소가 있는 경우
+        
+        if left(1) <= right(1) % 왼쪽 행렬의 첫번째 원소와 오른쪽 행렬의 첫번째 원소 비교
             res = [res left(1)];
             left(1) = [];
         else
             res = [res right(1)];
             right(1) = [];
         end
-    elseif ~isempty(left)
+        
+    elseif ~isempty(left) % 왼쪽 행렬만 원소가 있는 경우
         res = [res left(1)];
         left(1) = [];
-    elseif ~isempty(right)
+        
+    elseif ~isempty(right) % 오른쪽 행렬만 원소가 있는 경우
         res = [res right(1)];
         right(1) = [];
     end

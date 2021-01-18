@@ -15,7 +15,7 @@ else
     left_v = merge_sort(left_v);
     right_v = merge_sort(right_v);
     
-    v = merge(left_v, right_v);
+     v = merge(left_v, right_v);
     res = v;
 end
 
